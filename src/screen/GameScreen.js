@@ -1,42 +1,88 @@
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, Dimensions} from 'react-native';
 import React from 'react'
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import fetchBoard from '../store/actions/fetchBoard'
 import Row from '../components/Row'
+import validateAnswer from "../store/actions/validateAnswer"
+import solveBoard from "../store/actions/solveBoard"
 
-export default function GameScreen () {
-  const {board, loading} = useSelector(state => state)
-
+export default function GameScreen ({navigation, route}) {
+  const {username, difficulty} = route.params
+  const [validateClicked, setValidateClicked] = useState(false)
+  const {board, loading, answer, status} = useSelector(state => state)
   const dispatch = useDispatch()
 
   useEffect(()=>{
-    dispatch(fetchBoard('easy'))
+    if (status && validateClicked){
+      alert(status)
+      setValidateClicked(false)
+      // console.log('show alert');
+    }
+  },[validateClicked])
+
+  useEffect(()=>{
+    dispatch(fetchBoard(difficulty))
   },[])
+
+  function onPressValidateHandler() {
+    // console.log('validasi');
+    dispatch(validateAnswer(answer))
+    setValidateClicked(true)
+  }
+
+  function onPressSolveHandler() {
+    dispatch(solveBoard(board))
+  }
 
   if (loading) {
     return (
       <>
-      <View>
+      <View style={styles.container}>
         <Text>Loading...</Text>
       </View>
       </>
     )  
   }
-  // console.log(board);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
         Sugoku
       </Text>
+      <Text
+        style = {
+          {
+            fontSize:15,
+            marginBottom: 15
+          }}
+      >
+        hai {username}
+      </Text>
       <View style={styles.board}>
         {
           board.map((row,i) => {
-            return <Row row={row} idxRow={i}/>
+            return <Row row={row} idxRow={i} key={i}/>
           })
         }
       </View>
-      <Button title="Validate" style={styles.btn_validate}/>
+
+      <View style={styles.container_action}>
+        <Button
+          title="validate"
+          onPress={onPressValidateHandler}
+        />
+        {
+          status === 'solved' &&
+          <Button
+              title="Finish"
+              onPress={() => navigation.navigate('Finish',{username})}
+            />
+        }
+        <Button
+          title="Solve"
+          onPress={onPressSolveHandler}
+        />
+      </View>
     </View>
   )
 }
@@ -48,7 +94,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 5
   },
   container: {
     flex: 1,
@@ -56,9 +102,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btn_validate:{
-    marginTop: 30,
-    height: 30,
-    width:50
+  txt_btn_validate:{
+    fontSize: 20,
+    color: 'white'
+  },
+  container_action: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: Dimensions.get('window').width/1.2,
+    marginTop: 10,
+    marginBottom: 10
   }
 });

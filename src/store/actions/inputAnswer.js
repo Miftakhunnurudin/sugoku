@@ -1,8 +1,6 @@
 export default function inputAnswer (payload) {
-  return async (dispatch) => {
-    dispatch({
+  return {
       type: 'INPUT_ANSWER',
       payload
-    })
   }
 }

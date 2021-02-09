@@ -8,7 +8,7 @@ export default function Row (props) {
     <View>
       {
         row.map((number,i) => {
-          return <Cell number={number} idxRow={idxRow} idxCol={i}/>
+          return <Cell number={number} idxRow={idxRow} idxCol={i} key={i}/>
         })
       }
     </View>

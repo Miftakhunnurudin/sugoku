@@ -13,13 +13,13 @@ export default function fetchBoard (difficulty) {
       })
 
       const {board} = data
-      console.log(board, difficulty);
+      // console.log(difficulty,'fetchBoard');
       dispatch({
         type: 'FETCH_BOARD_DONE',
         payload: board
       })
     } catch (error) {
-      
+      console.log(error);
     }
   }
 }

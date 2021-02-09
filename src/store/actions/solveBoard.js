@@ -15,15 +15,15 @@ export default function validateAnswer (board) {
       }
 
       const {data} = await axios({
-        url: 'https://sugoku.herokuapp.com/validate',
+        url: 'https://sugoku.herokuapp.com/solve',
         method: 'POST',
         data: encodeParams(payload),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
 
       dispatch({
-        type: 'VALIDATE_ANSWER',
-        payload: data.status
+        type: 'SOLVE_BOARD',
+        payload: data
       })
 
     } catch (error) {
