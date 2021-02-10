@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Sugoku : A Sudoku game",
+    "githubUrl": "https://github.com/Miftakhunnurudin/sugoku"
   }
 }
