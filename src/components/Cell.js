@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View, Text} from 'react-native';
+import { StyleSheet, TextInput, View, Dimensions} from 'react-native';
 import React, {useState, useEffect} from 'react'
 import inputAnswer from '../store/actions/inputAnswer'
 import {useDispatch, useSelector} from 'react-redux'
@@ -9,13 +9,16 @@ export default function Cell (props) {
   const {number:num_board,idxRow,idxCol} = props
   const [inputValue, setInputValue] = useState('')
   const dispatch = useDispatch()
+
   const currentCellAnswer = answer[idxRow][idxCol]
   const mapping = isWhite(idxCol,idxRow)
+
   useEffect(()=>{
     setInputValue(currentCellAnswer? String(currentCellAnswer) : '')
   },[currentCellAnswer])
 
   const onChangeTextHandler = (text) => {
+    if(text.length>1) text = text[1]
     const payload = {number:text, idxCol, idxRow}
     dispatch(inputAnswer(payload))
   }
@@ -36,12 +39,14 @@ export default function Cell (props) {
   )
 }
 
+const windowWidth = Dimensions.get('window').width
+
 const styles = StyleSheet.create({
   box: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
-    width: 30,
+    height: (windowWidth - 80)/9,
+    width: (windowWidth - 80)/9,
     borderRadius: 5,
     margin: 3
   },

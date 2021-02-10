@@ -2,7 +2,7 @@ const initialStateBoard = {
   loading: false,
   board: [],
   answer: [],
-  status: ''
+  status: 'unsolved'
 }
 
 const boardReducer = (state = initialStateBoard, action) => {

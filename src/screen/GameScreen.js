@@ -14,10 +14,10 @@ export default function GameScreen ({navigation, route}) {
   const dispatch = useDispatch()
 
   useEffect(()=>{
-    if (status && validateClicked){
+    console.log(status,'masuuk')
+    if (validateClicked){
       alert(status)
       setValidateClicked(false)
-      // console.log('show alert');
     }
   },[validateClicked])
 
@@ -25,9 +25,9 @@ export default function GameScreen ({navigation, route}) {
     dispatch(fetchBoard(difficulty))
   },[])
 
-  function onPressValidateHandler() {
+  async function onPressValidateHandler() {
     // console.log('validasi');
-    dispatch(validateAnswer(answer))
+    await dispatch(validateAnswer(answer))
     setValidateClicked(true)
   }
 
